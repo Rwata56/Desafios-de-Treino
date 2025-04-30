@@ -1,0 +1,58 @@
+set.seed(42)  # Para reprodutibilidade
+
+# Função para simular o cenário aleatório
+glacao_aleatoria <- function() {
+  # Criando um vetor de números aleatórios representando as gavetas
+  gavetas <- sample(1:100, 100)
+  
+  sucesso <- 0
+  # Para cada prisioneiro (de 1 a 100)
+  for (prisioneiro in 1:100) {
+    # O prisioneiro escolhe aleatoriamente até 50 gavetas
+    gavetas_abertas <- sample(1:100, 50)
+    # Se o número do prisioneiro estiver nas gavetas abertas, ele encontra seu número
+    if (prisioneiro %in% gavetas[gavetas_abertas]) {
+      sucesso <- sucesso + 1
+    }
+  }
+  return(sucesso == 100)  # Retorna TRUE se todos os prisioneiros encontraram seus números
+}
+
+# Função para simular o cenário ótimo
+simulacao_otima <- function() {
+  # Criando um vetor de números aleatórios representando as gavetas
+  gavetas <- sample(1:100, 100)
+  
+  sucesso <- 0
+  # Para cada prisioneiro (de 1 a 100)
+  for (prisioneiro in 1:100) {
+    atual <- prisioneiro
+    encontrado <- FALSE
+    # O prisioneiro segue a estratégia ótima (abre até 50 gavetas)
+    for (i in 1:50) {
+      if (gavetas[atual] == prisioneiro) {
+        encontrado <- TRUE
+        break
+      }
+      atual <- gavetas[atual]
+    }
+    # Se o prisioneiro encontrou seu número, ele tem sucesso
+    if (encontrado) {
+      sucesso <- sucesso + 1
+    }
+  }
+  return(sucesso == 100)  # Retorna TRUE se todos os prisioneiros encontraram seus números
+}
+
+# Simulação das duas estratégias
+n_simulacoes <- 1000
+resultados_aleatorios <- replicate(n_simulacoes, simulacao_aleatoria())
+resultados_otimos <- replicate(n_simulacoes, simulacao_otima())
+
+# Probabilidade de sucesso em ambas as estratégias
+probabilidade_aleatoria <- mean(resultados_aleatorios)
+probabilidade_otima <- mean(resultados_otimos)
+
+# Exibindo as probabilidades de sucesso
+cat("Probabilidade de sucesso (estratégia aleatória):", probabilidade_aleatoria, "\n")
+cat("Probabilidade de sucesso (estratégia ótima):", probabilidade_otima, "\n")
