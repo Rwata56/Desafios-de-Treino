@@ -25,7 +25,6 @@ def rle_encode(data):
             count = 1
             prev_char = char
 
-    # Add the last run
     if count > 1:
         encoded.append(str(count))
     encoded.append(prev_char)
