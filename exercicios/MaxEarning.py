@@ -5,7 +5,7 @@ def max_earnings(earnings, k):
     n = len(earnings)
 
     if (k*2) > n:
-        return("invalido")
+        raise Exception("invalido")
 
     dp_work = [0] * n
     dp_skip = [0] * n
@@ -31,4 +31,5 @@ def max_earnings(earnings, k):
 # Test cases
 print(max_earnings([60, 70, 80, 40, 80, 90, 100, 20], 3))  # Output: 480
 print(max_earnings([45, 12, 78, 34, 56, 89, 23, 67, 91], 4))  # Output: 460
-print(max_earnings([45, 12, 78, 34, 56, 89, 23, 67, 91], 5))  # Output: 460
+print(max_earnings([45, 12, 78, 34, 56, 89, 23, 67, 91], 5))  # Output:
+print(max_earnings([100, 1, 90, 2, 80, 3, 70], 2))  # Output: 340
