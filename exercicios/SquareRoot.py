@@ -8,7 +8,7 @@ def square_root(number):
     for i in range(1, (number // 2) + 1):
         if i * i == number:
             return i
-    return None
+    return "não é quadrado perfeito"
 
 if __name__ == "__main__":
     print(square_root(1))   # Saída: 1
@@ -17,4 +17,4 @@ if __name__ == "__main__":
     print(square_root(16))  # Saída: 4
     print(square_root(25))  # Saída: 5
     print(square_root(-1))  # Saída: "invalido"
-    print(square_root(26))  # Saída: None (não é quadrado perfeito)
+    print(square_root(26))  # Saída: "não é quadrado perfeito"
