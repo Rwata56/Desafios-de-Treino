@@ -8,12 +8,11 @@ def sum_of_digit_powers(n, power):
     """Calcula a soma dos dígitos de n elevados à potência especificada."""
     return sum(int(digit)**power for digit in str(n))
 
-def find_numbers_with_digit_power_sum(power):
+def find_power_sum(power):
     """
     Encontra todos os números que são iguais à soma de seus dígitos elevados à potência dada.
     Retorna a soma desses números.
     """
-    # Estabelece um limite superior para a busca
     max_num = (9**power) * (power + 1)
 
     result = []
@@ -23,5 +22,5 @@ def find_numbers_with_digit_power_sum(power):
 
     return sum(result)
 
-solution = find_numbers_with_digit_power_sum(5)
+solution = find_power_sum(5)
 print(f"A soma de todos os números que podem ser escritos como a soma da quinta potência de seus dígitos é: {solution}")
