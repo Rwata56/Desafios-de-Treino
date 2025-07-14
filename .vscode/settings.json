@@ -3,7 +3,10 @@
     "python.testing.pytestArgs": ["-vv", "tests"],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.analysis.extraPaths": ["./src"],
+    "python.analysis.extraPaths": [
+      "./src",
+      "./src/desafios_de_treino"
+    ],
     "python.analysis.indexing": true,
     "python.analysis.autoImportCompletions": true,
     "python.analysis.autoSearchPaths": true,
