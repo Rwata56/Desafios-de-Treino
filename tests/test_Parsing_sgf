@@ -1,0 +1,164 @@
+import unittest
+from desafios_de_treino.Parsing_sgf import parse
+
+
+class SgfParsingTest(unittest.TestCase):
+    def assertTreeEqual(self, result, expected):
+        self.assertEqual(result["properties"], expected["properties"])
+        self.assertEqual(len(result["children"]), len(expected["children"]))
+        for child_result, child_expected in zip(
+            result["children"], expected["children"]
+        ):
+            self.assertTreeEqual(child_result, child_expected)
+
+    def test_empty_input(self):
+        with self.assertRaises(ValueError) as err:
+            parse("")
+        self.assertEqual(str(err.exception), "tree missing")
+
+    def test_tree_with_no_nodes(self):
+        with self.assertRaises(ValueError) as err:
+            parse("()")
+        self.assertEqual(str(err.exception), "tree with no nodes")
+
+    def test_node_without_tree(self):
+        with self.assertRaises(ValueError) as err:
+            parse(";")
+        self.assertEqual(str(err.exception), "tree missing")
+
+    def test_node_without_properties(self):
+        expected = {"properties": {}, "children": []}
+        self.assertTreeEqual(parse("(;)"), expected)
+
+    def test_single_node_single_property(self):
+        expected = {"properties": {"A": ["B"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[B])"), expected)
+
+    def test_single_node_multiple_properties(self):
+        expected = {"properties": {"A": ["b"], "C": ["d"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[b]C[d])"), expected)
+
+    def test_multiple_property_values(self):
+        expected = {"properties": {"A": ["b", "c", "d"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[b][c][d])"), expected)
+
+    def test_properties_without_delimiter(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;A)")
+        self.assertEqual(str(err.exception), "properties without delimiter")
+
+    def test_lowercase_property(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;a[b])")
+        self.assertEqual(str(err.exception), "property must be in uppercase")
+
+    def test_mixed_case_property(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;Aa[b])")
+        self.assertEqual(str(err.exception), "property must be in uppercase")
+
+    def test_two_nodes(self):
+        expected = {
+            "properties": {"A": ["B"]},
+            "children": [{"properties": {"B": ["C"]}, "children": []}],
+        }
+        self.assertTreeEqual(parse("(;A[B];B[C])"), expected)
+
+    def test_multiple_children(self):
+        expected = {
+            "properties": {"A": ["B"]},
+            "children": [
+                {"properties": {"B": ["C"]}, "children": []},
+                {"properties": {"C": ["D"]}, "children": []},
+            ],
+        }
+        self.assertTreeEqual(parse("(;A[B](;B[C])(;C[D]))"), expected)
+
+    def test_whitespace_in_values(self):
+        expected = {"properties": {"A": ["hello  world"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[hello\t\tworld])"), expected)
+
+    def test_newlines_in_values(self):
+        expected = {"properties": {"A": ["hello\n\nworld"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[hello\n\nworld])"), expected)
+
+    def test_escaped_chars(self):
+        expected = {"properties": {"A": ["]\\"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[\\]\\\\])"), expected)
+
+    def test_opening_bracket_in_value(self):
+        expected = {
+            "properties": {"A": ["x[y]z", "foo"], "B": ["bar"]},
+            "children": [{"properties": {"C": ["baz"]}, "children": []}],
+        }
+        self.assertTreeEqual(parse("(;A[x[y\\]z][foo]B[bar];C[baz])"), expected)
+
+    def test_semicolon_in_value(self):
+        expected = {
+            "properties": {"A": ["a;b", "foo"], "B": ["bar"]},
+            "children": [{"properties": {"C": ["baz"]}, "children": []}],
+        }
+        self.assertTreeEqual(parse("(;A[a;b][foo]B[bar];C[baz])"), expected)
+
+    def test_parentheses_in_value(self):
+        expected = {
+            "properties": {"A": ["x(y)z", "foo"], "B": ["bar"]},
+            "children": [{"properties": {"C": ["baz"]}, "children": []}],
+        }
+        self.assertTreeEqual(parse("(;A[x(y)z][foo]B[bar];C[baz])"), expected)
+
+    def test_escaped_tab_in_value(self):
+        expected = {"properties": {"A": ["hello world"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[hello\\\tworld])"), expected)
+
+    def test_escaped_newline_in_value(self):
+        expected = {"properties": {"A": ["helloworld"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[hello\\\nworld])"), expected)
+
+    def test_escaped_t_and_n_in_value(self):
+        expected = {"properties": {"A": ["t = t and n = n"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[\\t = t and \\n = n])"), expected)
+
+    def test_mixed_whitespace_and_escaped_chars(self):
+        expected = {"properties": {"A": ["]b\ncd  e\\ ]"]}, "children": []}
+        self.assertTreeEqual(parse("(;A[\\]b\nc\\\nd\t\te\\\\ \\\n\\]])"), expected)
+
+    def test_complex_tree_structure(self):
+        input_str = "(;FF[4]GM[1]SZ[19];B[aa];W[ab](;B[ba])(;W[bb]))"
+        expected = {
+            "properties": {"FF": ["4"], "GM": ["1"], "SZ": ["19"]},
+            "children": [
+                {
+                    "properties": {"B": ["aa"]},
+                    "children": [
+                        {
+                            "properties": {"W": ["ab"]},
+                            "children": [
+                                {"properties": {"B": ["ba"]}, "children": []},
+                                {"properties": {"W": ["bb"]}, "children": []},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+        self.assertTreeEqual(parse(input_str), expected)
+
+    def test_unbalanced_parentheses(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;A[B](;B[C]")
+        self.assertEqual(str(err.exception), "unbalanced parentheses")
+
+    def test_unclosed_property_value(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;A[B")
+        self.assertEqual(str(err.exception), "unclosed property value")
+
+    def test_invalid_child_node(self):
+        with self.assertRaises(ValueError) as err:
+            parse("(;A[B](;B[C][)")
+        self.assertIn("invalid child node", str(err.exception))
+
+
+if __name__ == "__main__":
+    unittest.main()
