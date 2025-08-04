@@ -1,7 +1,4 @@
-from typing import List
-
-
-def next_generation(grid: List[List[int]]) -> List[List[int]]:
+def next_generation(grid: list[list[int]]) -> list[list[int]]:
     """Calcula a próxima geração no Jogo da Vida de Conway."""
     if not grid:
         return []
@@ -9,8 +6,8 @@ def next_generation(grid: List[List[int]]) -> List[List[int]]:
     rows: int = len(grid)
     cols: int = len(grid[0]) if rows > 0 else 0
 
-    new_grid: List[List[int]] = [[0 for _ in range(cols)] for _ in range(rows)]
-    directions: List[tuple[int, int]] = [
+    new_grid: list[list[int]] = [[0 for _ in range(cols)] for _ in range(rows)]
+    directions: list[tuple[int, int]] = [
         (-1, -1),
         (-1, 0),
         (-1, 1),

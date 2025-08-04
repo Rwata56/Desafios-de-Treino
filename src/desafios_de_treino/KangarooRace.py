@@ -1,45 +1,23 @@
-class KangarooRace:
-    """Classe para resolver o problema dos cangurus saltadores."""
+def kangaroo(x1: int, v1: int, x2: int, v2: int) -> str:
+    """
+    Determina se dois cangurus irão se encontrar no mesmo ponto ao mesmo tempo.
 
-    def __init__(self, kanga1: int, rate1: int, kanga2: int, rate2: int) -> None:
-        """
-        Inicializa a corrida de cangurus.
+    Returns:
+        'YES' se os cangurus se encontrarem, 'NO' caso contrário
+    """
+    if x1 == x2:
+        return "YES"
 
-        Args:
-            kanga1: Posição inicial do primeiro canguru
-            rate1: Velocidade do primeiro canguru (saltos/etapa)
-            kanga2: Posição inicial do segundo canguru
-            rate2: Velocidade do segundo canguru (saltos/etapa)
-        """
-        self.kanga1_pos: int = kanga1
-        self.rate1: int = rate1
-        self.kanga2_pos: int = kanga2
-        self.rate2: int = rate2
+    if v1 == v2:
+        return "NO"
 
-    def will_meet(self) -> bool:
-        """
-        Determina se os cangurus se encontrarão no mesmo ponto ao mesmo tempo.
+    numerator = x2 - x1
+    denominator = v1 - v2
 
-        Returns:
-            True se os cangurus se encontrarem, False caso contrário
-        """
-        # Caso especial: já estão na mesma posição inicial
-        if self.kanga1_pos == self.kanga2_pos:
-            return True
+    if denominator == 0:
+        return "NO"
 
-        # Caso especial: mesma velocidade mas posições diferentes
-        if self.rate1 == self.rate2:
-            return False
+    if numerator % denominator != 0:
+        return "NO"
 
-        # Calcula o tempo necessário para se encontrarem
-        time_to_meet: float = (self.kanga2_pos - self.kanga1_pos) / (
-            self.rate1 - self.rate2
-        )
-
-        # Verifica se o tempo é positivo e inteiro (número de saltos)
-        return time_to_meet > 0 and time_to_meet.is_integer()
-
-
-def kangaroo(kanga1: int, rate1: int, kanga2: int, rate2: int) -> bool:
-    """Função principal para verificar se os cangurus se encontram."""
-    return KangarooRace(kanga1, rate1, kanga2, rate2).will_meet()
+    return "YES" if (numerator / denominator) > 0 else "NO"
