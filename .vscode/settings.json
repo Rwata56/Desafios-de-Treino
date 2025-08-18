@@ -1,6 +1,14 @@
 {
     "editor.formatOnSave": true,
-    "python.testing.pytestArgs": ["-vv", "tests"],
+    "python.testing.pytestArgs": [
+      "-vvv",
+      "--memray",
+      "--no-header",
+      "--tb=native",
+      "--showlocals",
+      "--full-trace",
+      "tests"
+    ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.analysis.extraPaths": [

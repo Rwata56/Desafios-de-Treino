@@ -1,5 +1,5 @@
 from desafios_de_treino.CountCoin import count_ways_to_make_200
-from desafios_de_treino.Hangman import (  # type: ignore
+from desafios_de_treino.Hangman import (
     get_display_word,
     guess,
     is_finished,
@@ -9,14 +9,14 @@ from desafios_de_treino.Hangman import (  # type: ignore
 )
 from desafios_de_treino.prime_circular import circular_primes_below
 from desafios_de_treino.SpiralMatrix import generate_spiral_matrix
-from desafios_de_treino.SquareRoot import square_root  # type: ignore
+from desafios_de_treino.SquareRoot import square_root
 
 
 def test_Square() -> None:
     assert 1 == square_root(1)
 
 
-def test_Square1() -> None:  # type: ignore
+def test_Square1() -> None:
     assert 2 == square_root(4)
     assert 3 == square_root(9)
 

@@ -1,9 +1,4 @@
-from typing import ClassVar
-
-
 class LargestSeriesProduct:
-    series: str
-    span: int
 
     def __init__(self, series: str, span: int) -> None:
         self.series = series
@@ -16,10 +11,10 @@ class LargestSeriesProduct:
             raise ValueError("span must be smaller than string length")
         if any(not ch.isdigit() for ch in self.series):
             raise ValueError("digits input must only contain digits")
-        if self.span == 0:
+        if not self.span:
             return 1
 
-        max_product: int = 0
+        max_product = 0
         for i in range(len(self.series) - self.span + 1):
             chunk = self.series[i : i + self.span]
             product = 1
