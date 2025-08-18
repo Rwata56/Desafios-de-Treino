@@ -1,4 +1,4 @@
-from tree import BinarySearchTree
+from desafios_de_treino.tree import BinarySearchTree
 
 
 class TestBinarySearchTree:
