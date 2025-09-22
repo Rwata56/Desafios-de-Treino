@@ -12,7 +12,7 @@ def test_data_is_retained():
         },
         "right": {"value": 4, "left": None, "right": None},
     }
-z
+
     expected = {
         "value": 1,
         "left": {
@@ -98,7 +98,7 @@ def test_traversing_up_from_top():
     }
 
     zipper = Zipper.from_tree(initial)
-    result = zipper.up()
+    result = zipper.up
     assert result is None
 
 
