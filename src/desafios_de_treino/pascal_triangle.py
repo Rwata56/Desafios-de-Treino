@@ -29,6 +29,13 @@ def nth_row_pascal(n):
     
     return row
 
+
+    # exemplo
+# Iteração 0: row = [1]
+# Iteração 1: next_row = [1, 1] → row = [1, 1]
+# Iteração 2: next_row = [1, (1+1)=2, 1] → row = [1, 2, 1]
+# Iteração 3: next_row = [1, (1+2)=3, (2+1)=3, 1] → row = [1, 3, 3, 1]
+
 def nth_row_pascal_optimized(n):
     """
     Versão otimizada usando fórmula de combinação C(n, k).
