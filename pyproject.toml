@@ -20,7 +20,7 @@ radon = "5.1"
 
 
 [tool.pytest.ini_options]
-addopts = ["--import-mode=importlib", "-ra", "-q", "-p"]
+addopts = ["--import-mode=importlib", "-ra", "-q"]
 pythonpath = "./src"
 testpaths = ["tests"]
 
