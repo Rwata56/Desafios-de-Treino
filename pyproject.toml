@@ -2,14 +2,10 @@
 name = "desafios_de_treino"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Rwata56",email = "rodwatague@gmail.com"}
-]
+authors = [{ name = "Rwata56", email = "rodwatague@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.12,<=4.0"
-dependencies = [
-    "python-constraint (>=1.4.0,<2.0.0)"
-]
+dependencies = ["python-constraint (>=1.4.0,<2.0.0)"]
 
 
 [build-system]
@@ -18,27 +14,24 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.0"
-pytest-profiling = "^1.8.1"
 pytest-cov = "^6.1.1"
 mypy = "^1.16.0"
 radon = "5.1"
-memray = "1.10.0"
-pytest-memray = "1.5.0"
+
 
 [tool.pytest.ini_options]
-addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
+addopts = ["--import-mode=importlib", "-ra", "-q", "-p"]
 pythonpath = "./src"
 testpaths = ["tests"]
- 
+
 [tool.coverage.run]
 omit = ["tests/*"]
- 
+
 [tool.mypy]
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 mypy_path = ["src"]
- 
+
 [tool.ruff]
 extend-include = ["*.ipynb"]
- 
