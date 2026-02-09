@@ -10,7 +10,6 @@ def maximize_segments(n: int, p: int, q: int, r: int) -> int:
     if p <= 0 or q <= 0 or r <= 0:
         raise ValueError("p, q e r devem ser maiores que zero")
 
-    # dp[i] = máximo de segmentos para comprimento i
     dp = [-1] * (n + 1)
     dp[0] = 0
 
